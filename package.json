@@ -3,12 +3,12 @@
   "devDependencies": {
     "eslint": "^8.56.0",
     "parcel": "^2.11.0",
-    "prettier": "^3.2.5"
+    "prettier": "^3.2.5",
+    "typescript": "^5.3.3"
   },
   "scripts": {
-    "start": "parcel src/index.html"
+    "start": "parcel src/index.html",
+    "compile": "tsc src/game.ts --noEmit"
   },
-  "dependencies": {
-    "littlejsengine": "^1.7.21"
-  }
+  "dependencies": {}
 }

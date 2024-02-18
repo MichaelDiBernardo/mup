@@ -1,4 +1,5 @@
-import { engineInit } from "littlejsengine";
+import { engineInit, vec2 } from "./ljs/littlejs";
+
 function gameInit() {
   // called once after the engine starts up
   // setup the game

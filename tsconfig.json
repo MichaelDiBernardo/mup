@@ -1,5 +1,9 @@
 {
+  "include": ["src/**/*"],
+
   "compilerOptions": {
-    "isolatedModules": true
+    "isolatedModules": true,
+    "allowJs": true,
+    "outDir": "dist"
   }
 }
