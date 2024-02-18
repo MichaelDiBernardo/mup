@@ -1,8 +1,12 @@
-import { engineInit, vec2 } from "./ljs/littlejs";
+import { engineInit } from "./ljs/littlejs";
+import { Player } from "./player";
+
+const TILES = new URL("tiles.png", import.meta.url);
 
 function gameInit() {
   // called once after the engine starts up
   // setup the game
+  new Player();
 }
 
 function gameUpdate() {
@@ -32,5 +36,5 @@ engineInit(
   gameUpdatePost,
   gameRender,
   gameRenderPost,
-  "tiles.png"
+  TILES.toString()
 );
