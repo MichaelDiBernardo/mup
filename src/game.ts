@@ -1,4 +1,12 @@
-import { Color, drawRect, engineInit, vec2 } from "./ljs/littlejs";
+import {
+  Color,
+  drawRect,
+  engineInit,
+  setCameraPos,
+  setCameraScale,
+  setCanvasFixedSize,
+  vec2,
+} from "./ljs/littlejs";
 import { Monster } from "./monster";
 import { Player } from "./player";
 import { randint } from "./random";
@@ -20,6 +28,7 @@ function makeMonster(): Monster {
 function gameInit() {
   // called once after the engine starts up
   // setup the game
+  setCanvasFixedSize(vec2(1920, 1080));
   player = new Player(vec2(0));
   for (let i = 0; i < 5; i++) {
     monsters.push(makeMonster());
@@ -34,6 +43,8 @@ function gameUpdate() {
 function gameUpdatePost() {
   // called after physics and objects are updated
   // setup camera and prepare for render
+  setCameraPos(player.pos);
+  setCameraScale(128);
 }
 
 function gameRender() {
