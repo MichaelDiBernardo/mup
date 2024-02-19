@@ -1,7 +1,9 @@
-import { EngineObject, vec2 } from "./ljs/littlejs";
+import { EngineObject, Vector2, vec2 } from "./ljs/littlejs";
+import { OBJECT_PIXEL_SIZE, OBJECT_WORLD_SIZE } from "./constants";
 
 export class Player extends EngineObject {
-  constructor() {
-    super(vec2(0, 0), vec2(1, 1), 0, vec2(8));
+  constructor(pos: Vector2) {
+    super(pos, OBJECT_WORLD_SIZE, 0, OBJECT_PIXEL_SIZE);
+    this.pos = pos;
   }
 }
