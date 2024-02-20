@@ -1,11 +1,10 @@
-import { Vector2, vec2 } from "./ljs/littlejs";
+import { Vector2, vec2, randInt } from "./ljs/littlejs";
 import { Monster } from "./monster";
 import { Player } from "./player";
-import { randint } from "./random";
 
 function makeMonster(): Monster {
   while (true) {
-    const pos = vec2(randint(0, 5), randint(0, 5));
+    const pos = vec2(randInt(-6, 6), randInt(-6, 6));
     if (pos.x !== 0 || pos.y !== 0) {
       return new Monster(pos);
     }
