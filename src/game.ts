@@ -8,53 +8,37 @@ import {
   setCanvasFixedSize,
   vec2,
 } from "./ljs/littlejs";
-import { Monster } from "./monster";
-import { Player } from "./player";
-import { randint } from "./random";
+import { Mu } from "./mu";
 
 const TILES = new URL("tiles.png", import.meta.url);
 
-let player: Player;
-const monsters = Array<Monster>();
-
-function makeMonster(): Monster {
-  while (true) {
-    const pos = vec2(randint(0, 5), randint(0, 5));
-    if (pos.x !== 0 || pos.y !== 0) {
-      return new Monster(pos);
-    }
-  }
-}
+const mu = new Mu();
 
 function gameInit() {
   // called once after the engine starts up
   // setup the game
   setCanvasFixedSize(vec2(1920, 1080));
-  player = new Player(vec2(0));
-  for (let i = 0; i < 5; i++) {
-    monsters.push(makeMonster());
-  }
+  setCameraScale(128);
 }
 
 function gameUpdate() {
   // called every frame at 60 frames per second
   // handle input and update the game state
   if (keyWasPressed(37)) {
-    player.pos.x -= 1;
+    mu.handleMovePlayer(vec2(-1, 0));
   } else if (keyWasPressed(39)) {
-    player.pos.x += 1;
+    mu.handleMovePlayer(vec2(1, 0));
   } else if (keyWasPressed(38)) {
-    player.pos.y += 1;
+    mu.handleMovePlayer(vec2(0, 1));
   } else if (keyWasPressed(40)) {
-    player.pos.y -= 1;
+    mu.handleMovePlayer(vec2(0, -1));
   }
 }
 
 function gameUpdatePost() {
   // called after physics and objects are updated
   // setup camera and prepare for render
-  setCameraPos(player.pos);
-  setCameraScale(128);
+  setCameraPos(mu.player.pos);
 }
 
 function gameRender() {

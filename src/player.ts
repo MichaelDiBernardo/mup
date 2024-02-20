@@ -6,4 +6,8 @@ export class Player extends EngineObject {
     super(pos, OBJECT_WORLD_SIZE, 0, OBJECT_PIXEL_SIZE);
     this.pos = pos;
   }
+
+  move(dir: Vector2) {
+    this.pos = this.pos.add(dir);
+  }
 }
