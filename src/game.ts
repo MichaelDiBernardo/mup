@@ -2,6 +2,7 @@ import {
   Color,
   drawRect,
   engineInit,
+  keyWasPressed,
   setCameraPos,
   setCameraScale,
   setCanvasFixedSize,
@@ -38,6 +39,15 @@ function gameInit() {
 function gameUpdate() {
   // called every frame at 60 frames per second
   // handle input and update the game state
+  if (keyWasPressed(37)) {
+    player.pos.x -= 1;
+  } else if (keyWasPressed(39)) {
+    player.pos.x += 1;
+  } else if (keyWasPressed(38)) {
+    player.pos.y += 1;
+  } else if (keyWasPressed(40)) {
+    player.pos.y -= 1;
+  }
 }
 
 function gameUpdatePost() {
