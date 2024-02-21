@@ -40,13 +40,14 @@ function gameUpdate() {
 function gameUpdatePost() {
   // called after physics and objects are updated
   // setup camera and prepare for render
-  setCameraPos(mu.player.pos);
+  setCameraPos(mu.level.player.pos);
 }
 
 function gameRender() {
   // called before objects are rendered
   // draw any background effects that appear behind objects
-  drawRect(vec2(0), vec2(100), new Color(0, 0.2, 0));
+  drawRect(vec2(0), vec2(100), new Color(0, 0, 0));
+
   for (let x = 0; x < mu.level.map.length; x++) {
     const row = mu.level.map[x];
     for (let y = 0; y < row.length; y++) {
@@ -68,5 +69,5 @@ engineInit(
   gameUpdatePost,
   gameRender,
   gameRenderPost,
-  TILES.toString()
+  TILES.toString(),
 );

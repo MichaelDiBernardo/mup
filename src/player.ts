@@ -1,4 +1,4 @@
-import { EngineObject, Vector2, vec2 } from "./ljs/littlejs";
+import { EngineObject, Vector2 } from "./ljs/littlejs";
 import { OBJECT_PIXEL_SIZE, OBJECT_WORLD_SIZE } from "./constants";
 
 export class Player extends EngineObject {
