@@ -1,6 +1,8 @@
+import { OBJECT_PIXEL_SIZE, OBJECT_WORLD_SIZE } from "./constants";
 import {
   Color,
   drawRect,
+  drawTile,
   engineInit,
   keyWasPressed,
   setCameraPos,
@@ -45,6 +47,13 @@ function gameRender() {
   // called before objects are rendered
   // draw any background effects that appear behind objects
   drawRect(vec2(0), vec2(100), new Color(0, 0.2, 0));
+  for (let x = 0; x < mu.level.map.length; x++) {
+    const row = mu.level.map[x];
+    for (let y = 0; y < row.length; y++) {
+      const cell = row[y];
+      drawTile(cell.pos, OBJECT_WORLD_SIZE, cell.tileIndex, OBJECT_PIXEL_SIZE);
+    }
+  }
 }
 
 function gameRenderPost() {

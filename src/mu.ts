@@ -1,3 +1,4 @@
+import { Level } from "./level";
 import { Vector2, vec2, randInt, ASSERT } from "./ljs/littlejs";
 import { Monster } from "./monster";
 import { Player } from "./player";
@@ -5,11 +6,13 @@ import { MONSTER_DEATH_SOUND } from "./sound";
 
 export class Mu {
   player: Player;
+  level: Level;
   monsters: Array<Monster>;
   nextMonsterId = 0;
 
   constructor() {
-    this.player = new Player(vec2(0));
+    this.player = new Player(vec2(8));
+    this.level = new Level();
     this.monsters = Array<Monster>();
     for (let i = 0; i < 5; i++) {
       this.makeMonster();
@@ -36,7 +39,7 @@ export class Mu {
   makeMonster(): void {
     let pos: Vector2;
     while (true) {
-      pos = vec2(randInt(-6, 6), randInt(-6, 6));
+      pos = vec2(randInt(0, 16), randInt(0, 16));
       if (!this.getMonsterAt(pos) && !(pos.x === 0 && pos.y === 0)) {
         break;
       }
