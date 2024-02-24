@@ -46,17 +46,21 @@ export class CellMap {
   static fromString(str: string): CellMap {
     const map: Cell[][] = [];
     const rows = str.split("\n").filter((row) => row.length !== 0);
+    const height = rows.length;
+    const width = rows[0].length;
     console.log(dump(rows));
-    for (let y = rows.length - 1; y >= 0; y--) {
-      map[y] = [];
+
+    for (let y = 0; y < height; y++) {
+      const yPos = height - y - 1;
+      map[yPos] = [];
       const row = rows[y];
       for (let x = 0; x < row.length; x++) {
         const symbol = row.charAt(x);
-        const pos = vec2(x, y);
+        const pos = vec2(x, yPos);
         if (symbol === "#") {
-          map[y][x] = new Cell(pos, TerrainType.Wall, TerrainTile.Rock);
+          map[yPos][x] = new Cell(pos, TerrainType.Wall, TerrainTile.Rock);
         } /*if (symbol === " " || symbol === "p" || symbol === "m")*/ else {
-          map[y][x] = new Cell(pos, TerrainType.Floor, TerrainTile.Grass);
+          map[yPos][x] = new Cell(pos, TerrainType.Floor, TerrainTile.Grass);
         }
       }
     }
