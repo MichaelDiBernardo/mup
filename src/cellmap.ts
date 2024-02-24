@@ -1,7 +1,6 @@
-import { Vector2, vec2 } from "./ljs/littlejs";
+import { Vector2 } from "./ljs/littlejs";
 import { Monster } from "./monster";
-import { TerrainTile, TerrainType } from "./types";
-import { dump } from "./utils";
+import { Terrain, TerrainTile, TerrainType } from "./types";
 
 /**
  * Single location in a map. Called "Cell" because "Tile" is used by littlejs,
@@ -10,18 +9,12 @@ import { dump } from "./utils";
 export class Cell {
   pos: Vector2;
   monster: Monster | null;
-  terrainType: TerrainType;
-  terrainTile: TerrainTile;
+  terrain: Terrain;
 
-  constructor(
-    pos: Vector2,
-    terrainType: TerrainType,
-    terrainTile: TerrainTile
-  ) {
+  constructor(pos: Vector2, terrain: Terrain) {
     this.pos = pos;
     this.monster = null;
-    this.terrainType = terrainType;
-    this.terrainTile = terrainTile;
+    this.terrain = terrain;
   }
 }
 

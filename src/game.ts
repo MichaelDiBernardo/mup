@@ -55,7 +55,7 @@ function gameRender() {
       drawTile(
         cell.pos,
         OBJECT_WORLD_SIZE,
-        cell.terrainTile,
+        cell.terrain.tile,
         OBJECT_PIXEL_SIZE
       );
     }

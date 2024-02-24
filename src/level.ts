@@ -1,8 +1,8 @@
 import { ASSERT, Vector2, randInt, vec2 } from "./ljs/littlejs";
 import { Monster } from "./monster";
 import { Player } from "./player";
-import { MONSTER_DEATH_SOUND } from "./sound";
-import { TerrainTile, TerrainType } from "./types";
+import { BUMP_WALL_SOUND, MONSTER_DEATH_SOUND } from "./sound";
+import { TerrainTile, TerrainType, TerrainTypes } from "./types";
 import { Cell, CellMap } from "./cellmap";
 
 export class Level {
@@ -18,10 +18,12 @@ export class Level {
 
   movePlayer(dir: Vector2) {
     const dest = this.player.pos.add(dir);
-    const monster = this.map.getCellAt(dest).monster;
+    const cell = this.map.getCellAt(dest);
 
-    if (monster) {
-      this.killMonster(monster);
+    if (cell.terrain.solid) {
+      BUMP_WALL_SOUND.play();
+    } else if (cell.monster) {
+      this.killMonster(cell.monster);
     } else {
       this.player.move(dir);
     }
@@ -72,23 +74,14 @@ export class Level {
         const symbol = row.charAt(x);
         const pos = vec2(x, yPos);
         if (symbol === "#") {
-          map.setCellAt(pos, new Cell(pos, TerrainType.Wall, TerrainTile.Rock));
+          map.setCellAt(pos, new Cell(pos, TerrainTypes.Wall));
         } else if (symbol === " ") {
-          map.setCellAt(
-            pos,
-            new Cell(pos, TerrainType.Floor, TerrainTile.Grass)
-          );
+          map.setCellAt(pos, new Cell(pos, TerrainTypes.Floor));
         } else if (symbol === "p") {
-          map.setCellAt(
-            pos,
-            new Cell(pos, TerrainType.Floor, TerrainTile.Grass)
-          );
+          map.setCellAt(pos, new Cell(pos, TerrainTypes.Floor));
           level.placePlayer(pos);
         } else if (symbol === "m") {
-          map.setCellAt(
-            pos,
-            new Cell(pos, TerrainType.Floor, TerrainTile.Grass)
-          );
+          map.setCellAt(pos, new Cell(pos, TerrainTypes.Floor));
           level.makeMonster(pos);
         }
       }
