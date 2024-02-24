@@ -48,11 +48,16 @@ function gameRender() {
   // draw any background effects that appear behind objects
   drawRect(vec2(0), vec2(100), new Color(0, 0, 0));
 
-  for (let x = 0; x < mu.level.map.length; x++) {
-    const row = mu.level.map[x];
-    for (let y = 0; y < row.length; y++) {
-      const cell = row[y];
-      drawTile(cell.pos, OBJECT_WORLD_SIZE, cell.tileIndex, OBJECT_PIXEL_SIZE);
+  const map = mu.level.map;
+  for (let x = 0; x < map.size.x; x++) {
+    for (let y = 0; y < map.size.y; y++) {
+      const cell = map.getCellAt(vec2(x, y));
+      drawTile(
+        cell.pos,
+        OBJECT_WORLD_SIZE,
+        cell.terrainTile,
+        OBJECT_PIXEL_SIZE
+      );
     }
   }
 }
@@ -69,5 +74,5 @@ engineInit(
   gameUpdatePost,
   gameRender,
   gameRenderPost,
-  TILES.toString(),
+  TILES.toString()
 );

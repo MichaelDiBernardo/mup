@@ -2,35 +2,25 @@ import { ASSERT, Vector2, randInt, vec2 } from "./ljs/littlejs";
 import { Monster } from "./monster";
 import { Player } from "./player";
 import { MONSTER_DEATH_SOUND } from "./sound";
-
-export class Cell {
-  pos: Vector2;
-  tileIndex: number;
-  monster: Monster | null;
-
-  constructor(pos: Vector2) {
-    this.pos = pos;
-    this.tileIndex = 512;
-    this.monster = null;
-  }
-}
+import { TerrainTile, TerrainType } from "./types";
+import { TEST_MAP } from "./fixedlevels";
+import { CellMap } from "./cellmap";
 
 export class Level {
+  map: CellMap;
   player: Player;
-  map: Cell[][];
-  monsters: Array<Monster>;
+  monsters = new Array<Monster>();
   nextMonsterId = 0;
 
   constructor(player: Player) {
     this.player = player;
-    this.makeMap();
-    this.makeMonsters();
+    this.map = CellMap.fromString(TEST_MAP);
     this.placePlayer();
   }
 
   movePlayer(dir: Vector2) {
     const dest = this.player.pos.add(dir);
-    const monster = this.getMonsterAt(dest);
+    const monster = this.map.getCellAt(dest).monster;
 
     if (monster) {
       this.killMonster(monster);
@@ -57,44 +47,30 @@ export class Level {
   }
 
   private removeMonsterAtCell(pos: Vector2) {
-    const cell = this.map[pos.x][pos.y];
+    const cell = this.map.getCellAt(pos);
     ASSERT(cell.monster !== null);
     cell.monster = null;
   }
 
-  private makeMap(): void {
-    this.map = [];
+  // private makeMonster(pos?: Vector2): void {
+  //   if (!pos) {
+  //     while (true) {
+  //       pos = vec2(randInt(1, this.size.x), randInt(1, this.size.y));
+  //       if (!this.getMonsterAt(pos) && !(pos.x === 0 && pos.y === 0)) {
+  //         break;
+  //       }
+  //     }
+  //   }
+  //   const monster = new Monster(this.nextMonsterId, pos);
+  //   this.monsters.push(monster);
+  //   this.placeMonster(monster);
+  //   this.nextMonsterId++;
+  // }
 
-    for (let x = 0; x < 16; x++) {
-      this.map[x] = [];
-      for (let y = 0; y < 16; y++) {
-        this.map[x][y] = new Cell(vec2(x, y));
-      }
+  private placePlayer(pos?: Vector2): void {
+    if (!pos) {
+      pos = vec2(8);
     }
-  }
-
-  private makeMonsters(): void {
-    this.monsters = Array<Monster>();
-    for (let i = 0; i < 5; i++) {
-      this.makeMonster();
-    }
-  }
-
-  private makeMonster(): void {
-    let pos: Vector2;
-    while (true) {
-      pos = vec2(randInt(0, 16), randInt(0, 16));
-      if (!this.getMonsterAt(pos) && !(pos.x === 0 && pos.y === 0)) {
-        break;
-      }
-    }
-    const monster = new Monster(this.nextMonsterId, pos);
-    this.monsters.push(monster);
-    this.placeMonster(monster);
-    this.nextMonsterId++;
-  }
-
-  private placePlayer(): void {
-    this.player.pos = vec2(8);
+    this.player.pos = pos;
   }
 }
