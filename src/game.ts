@@ -16,6 +16,13 @@ const TILES = new URL("tiles.png", import.meta.url);
 
 const mu = new Mu();
 
+const Directions = {
+  UP: vec2(0, 1),
+  DOWN: vec2(0, -1),
+  LEFT: vec2(-1, 0),
+  RIGHT: vec2(1, 0),
+};
+
 function gameInit() {
   // called once after the engine starts up
   // setup the game
@@ -27,13 +34,13 @@ function gameUpdate() {
   // called every frame at 60 frames per second
   // handle input and update the game state
   if (keyWasPressed(37)) {
-    mu.handleMovePlayer(vec2(-1, 0));
+    mu.handleMovePlayer(Directions.LEFT);
   } else if (keyWasPressed(39)) {
-    mu.handleMovePlayer(vec2(1, 0));
+    mu.handleMovePlayer(Directions.RIGHT);
   } else if (keyWasPressed(38)) {
-    mu.handleMovePlayer(vec2(0, 1));
+    mu.handleMovePlayer(Directions.UP);
   } else if (keyWasPressed(40)) {
-    mu.handleMovePlayer(vec2(0, -1));
+    mu.handleMovePlayer(Directions.DOWN);
   }
 }
 
