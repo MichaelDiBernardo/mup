@@ -3,19 +3,17 @@ import { Monster } from "./monster";
 import { Player } from "./player";
 import { MONSTER_DEATH_SOUND } from "./sound";
 import { TerrainTile, TerrainType } from "./types";
-import { TEST_MAP } from "./fixedlevels";
-import { CellMap } from "./cellmap";
+import { Cell, CellMap } from "./cellmap";
 
 export class Level {
   map: CellMap;
   player: Player;
-  monsters = new Array<Monster>();
+  monsters: Monster[] = [];
   nextMonsterId = 0;
 
-  constructor(player: Player) {
+  constructor(player: Player, map: CellMap) {
     this.player = player;
-    this.map = CellMap.fromString(TEST_MAP);
-    this.placePlayer();
+    this.map = map;
   }
 
   movePlayer(dir: Vector2) {
@@ -36,12 +34,8 @@ export class Level {
     this.removeMonsterAtCell(monster.pos);
   }
 
-  private getMonsterAt(pos: Vector2): Monster | null {
-    return this.map[pos.x][pos.y].monster;
-  }
-
   private placeMonster(monster: Monster) {
-    const cell = this.map[monster.pos.x][monster.pos.y];
+    const cell = this.map.getCellAt(monster.pos);
     ASSERT(cell.monster === null);
     cell.monster = monster;
   }
@@ -52,25 +46,54 @@ export class Level {
     cell.monster = null;
   }
 
-  // private makeMonster(pos?: Vector2): void {
-  //   if (!pos) {
-  //     while (true) {
-  //       pos = vec2(randInt(1, this.size.x), randInt(1, this.size.y));
-  //       if (!this.getMonsterAt(pos) && !(pos.x === 0 && pos.y === 0)) {
-  //         break;
-  //       }
-  //     }
-  //   }
-  //   const monster = new Monster(this.nextMonsterId, pos);
-  //   this.monsters.push(monster);
-  //   this.placeMonster(monster);
-  //   this.nextMonsterId++;
-  // }
+  private makeMonster(pos: Vector2): void {
+    const monster = new Monster(this.nextMonsterId, pos);
+    this.monsters.push(monster);
+    this.placeMonster(monster);
+    this.nextMonsterId++;
+  }
 
-  private placePlayer(pos?: Vector2): void {
-    if (!pos) {
-      pos = vec2(8);
-    }
+  private placePlayer(pos: Vector2): void {
     this.player.pos = pos;
+  }
+
+  static fromString(player, str: string): Level {
+    const rows = str.split("\n").filter((row) => row.length !== 0);
+    const height = rows.length;
+    const width = rows[0].length;
+
+    const map = new CellMap(vec2(width, height));
+    const level = new Level(player, map);
+
+    for (let y = 0; y < height; y++) {
+      const yPos = height - y - 1;
+      const row = rows[y];
+      for (let x = 0; x < width; x++) {
+        const symbol = row.charAt(x);
+        const pos = vec2(x, yPos);
+        if (symbol === "#") {
+          map.setCellAt(pos, new Cell(pos, TerrainType.Wall, TerrainTile.Rock));
+        } else if (symbol === " ") {
+          map.setCellAt(
+            pos,
+            new Cell(pos, TerrainType.Floor, TerrainTile.Grass)
+          );
+        } else if (symbol === "p") {
+          map.setCellAt(
+            pos,
+            new Cell(pos, TerrainType.Floor, TerrainTile.Grass)
+          );
+          level.placePlayer(pos);
+        } else if (symbol === "m") {
+          map.setCellAt(
+            pos,
+            new Cell(pos, TerrainType.Floor, TerrainTile.Grass)
+          );
+          level.makeMonster(pos);
+        }
+      }
+    }
+
+    return level;
   }
 }

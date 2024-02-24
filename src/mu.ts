@@ -1,3 +1,4 @@
+import { TEST_MAP } from "./fixedlevels";
 import { Level } from "./level";
 import { Vector2, vec2 } from "./ljs/littlejs";
 import { Player } from "./player";
@@ -7,7 +8,7 @@ export class Mu {
 
   constructor() {
     const player = new Player(vec2(0));
-    this.level = new Level(player);
+    this.level = Level.fromString(player, TEST_MAP);
   }
 
   handleMovePlayer(dir: Vector2): void {

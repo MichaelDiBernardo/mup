@@ -1,5 +1,3 @@
-function dump(o: object): string {
-  return JSON.stringify(o, null, 2);
-}
-
-export { dump };
+export const dump = (val: any): string => {
+  return JSON.stringify(val, null, 2);
+};
