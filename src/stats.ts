@@ -8,6 +8,14 @@ export enum StatKey {
   INS = "ins", // Hit/dodge
 }
 
+export const ALL_STATS = [
+  StatKey.HP,
+  StatKey.ATK,
+  StatKey.DEF,
+  StatKey.SPD,
+  StatKey.INS,
+];
+
 export type StatValue = {
   current: number;
   max: number;
@@ -23,12 +31,10 @@ export class Stats {
   };
 
   constructor(initialValues: Record<StatKey, number>) {
-    [StatKey.HP, StatKey.ATK, StatKey.DEF, StatKey.SPD, StatKey.INS].forEach(
-      (key) => {
-        this.setCurrent(key, initialValues[key]);
-        this.setMax(key, initialValues[key]);
-      }
-    );
+    ALL_STATS.forEach((key) => {
+      this.setCurrent(key, initialValues[key]);
+      this.setMax(key, initialValues[key]);
+    });
   }
 
   get(key: StatKey): StatValue {

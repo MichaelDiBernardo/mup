@@ -1,7 +1,9 @@
 import { OBJECT_PIXEL_SIZE, OBJECT_WORLD_SIZE } from "./constants";
 import {
   Color,
+  cameraPos,
   drawRect,
+  drawText,
   drawTile,
   engineInit,
   keyWasPressed,
@@ -11,6 +13,7 @@ import {
   vec2,
 } from "./ljs/littlejs";
 import { Mu } from "./mu";
+import { ALL_STATS, StatKey } from "./stats";
 
 const TILES = new URL("tiles.png", import.meta.url);
 
@@ -72,6 +75,21 @@ function gameRender() {
 function gameRenderPost() {
   // called after objects are rendered
   // draw effects or hud that appear above all objects
+  const statColor = new Color();
+  const fontSize = 0.4;
+
+  ALL_STATS.forEach((key, i) => {
+    drawText(
+      `${key.toLocaleUpperCase()}: ${mu.level.player.stats.get(key).current}`,
+      cameraPos.add(vec2(-7.2, 3.7 - i / 2)),
+      fontSize,
+      statColor,
+      0,
+      new Color(),
+      "left",
+      "Courier"
+    );
+  });
 }
 
 // Startup LittleJS Engine
