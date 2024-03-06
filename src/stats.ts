@@ -71,4 +71,8 @@ export class Stats {
       stat.current = Math.max(0, stat.current);
     }
   }
+
+  isDead(): boolean {
+    return this.get(StatKey.HP).current <= 0;
+  }
 }

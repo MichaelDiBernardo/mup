@@ -1,9 +1,11 @@
 import { ASSERT, Vector2, randInt, vec2 } from "./ljs/littlejs";
 import { Monster } from "./monster";
 import { Player } from "./player";
-import { BUMP_WALL_SOUND, MONSTER_DEATH_SOUND } from "./sound";
+import { BUMP_WALL_SOUND, HIT_SOUNDS, MONSTER_DEATH_SOUND } from "./sound";
 import { TerrainTile, TerrainType, TerrainTypes } from "./types";
 import { Cell, CellMap } from "./cellmap";
+import { calculateDamage } from "./formulas";
+import { StatKey } from "./stats";
 
 export class Level {
   map: CellMap;
@@ -23,9 +25,26 @@ export class Level {
     if (cell.terrain.solid) {
       BUMP_WALL_SOUND.play();
     } else if (cell.monster) {
-      this.killMonster(cell.monster);
+      this.attackMonster(cell.monster);
     } else {
       this.player.move(dir);
+    }
+  }
+
+  private attackMonster(monster: Monster) {
+    const damage = calculateDamage(
+      this.player.stats.get(StatKey.ATK).current,
+      monster.stats.get(StatKey.DEF).current,
+    );
+
+    console.log(damage);
+    monster.stats.hurt(StatKey.HP, damage, false);
+
+    if (monster.stats.isDead()) {
+      this.killMonster(monster);
+    } else {
+      const hitSoundIndex = randInt(0, HIT_SOUNDS.length);
+      HIT_SOUNDS[hitSoundIndex].play();
     }
   }
 

@@ -66,7 +66,7 @@ function gameRender() {
         cell.pos,
         OBJECT_WORLD_SIZE,
         cell.terrain.tile,
-        OBJECT_PIXEL_SIZE
+        OBJECT_PIXEL_SIZE,
       );
     }
   }
@@ -87,7 +87,7 @@ function gameRenderPost() {
       0,
       new Color(),
       "left",
-      "Courier"
+      "Courier",
     );
   });
 }
@@ -99,5 +99,5 @@ engineInit(
   gameUpdatePost,
   gameRender,
   gameRenderPost,
-  TILES.toString()
+  TILES.toString(),
 );

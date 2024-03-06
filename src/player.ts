@@ -10,7 +10,7 @@ export class Player extends EngineObject {
     this.pos = pos;
     this.stats = new Stats({
       [StatKey.HP]: 10,
-      [StatKey.ATK]: 1,
+      [StatKey.ATK]: 2,
       [StatKey.DEF]: 1,
       [StatKey.SPD]: 1,
       [StatKey.INS]: 1,
