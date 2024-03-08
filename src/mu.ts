@@ -3,6 +3,8 @@ import { Level } from "./level";
 import { Vector2, vec2 } from "./ljs/littlejs";
 import { Player } from "./player";
 
+export type GameState = "playingEffects" | "playerTurn" | "readyForEvolve";
+
 export class Mu {
   level: Level;
 
@@ -14,4 +16,10 @@ export class Mu {
   handleMovePlayer(dir: Vector2): void {
     this.level.movePlayer(dir);
   }
+
+  state(): GameState {
+    return "playerTurn";
+  }
+
+  evolve(): void {}
 }

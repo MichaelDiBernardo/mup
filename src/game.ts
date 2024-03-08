@@ -36,14 +36,14 @@ function gameInit() {
 function gameUpdate() {
   // called every frame at 60 frames per second
   // handle input and update the game state
-  if (keyWasPressed(37)) {
-    mu.handleMovePlayer(Directions.LEFT);
-  } else if (keyWasPressed(39)) {
-    mu.handleMovePlayer(Directions.RIGHT);
-  } else if (keyWasPressed(38)) {
-    mu.handleMovePlayer(Directions.UP);
-  } else if (keyWasPressed(40)) {
-    mu.handleMovePlayer(Directions.DOWN);
+
+  const state = mu.state();
+  if (state === "playingEffects") {
+    return;
+  } else if (state === "playerTurn") {
+    _checkInput();
+  } else {
+    mu.evolve();
   }
 }
 
@@ -66,7 +66,7 @@ function gameRender() {
         cell.pos,
         OBJECT_WORLD_SIZE,
         cell.terrain.tile,
-        OBJECT_PIXEL_SIZE,
+        OBJECT_PIXEL_SIZE
       );
     }
   }
@@ -87,9 +87,21 @@ function gameRenderPost() {
       0,
       new Color(),
       "left",
-      "Courier",
+      "Courier"
     );
   });
+}
+
+function _checkInput(): void {
+  if (keyWasPressed(37)) {
+    mu.handleMovePlayer(Directions.LEFT);
+  } else if (keyWasPressed(39)) {
+    mu.handleMovePlayer(Directions.RIGHT);
+  } else if (keyWasPressed(38)) {
+    mu.handleMovePlayer(Directions.UP);
+  } else if (keyWasPressed(40)) {
+    mu.handleMovePlayer(Directions.DOWN);
+  }
 }
 
 // Startup LittleJS Engine
@@ -99,5 +111,5 @@ engineInit(
   gameUpdatePost,
   gameRender,
   gameRenderPost,
-  TILES.toString(),
+  TILES.toString()
 );
