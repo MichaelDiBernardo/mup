@@ -1,0 +1,33 @@
+turn energy required = 20
+
+m1 2
+m2 3
+p  4
+m3 1
+
+max = 4
+mult = ceil(ter / max) => 5 
+
+foreach dude in turnorder:
+  new_energy = old_energy * mult
+
+turn_order = sortby(energy)
+
+=>
+
+p  20
+m2 12
+m1 10
+m3 5
+
+
+On evolve:
+if !turn_order.first.energy >= required
+    energize(turn_order)
+    
+turn_order.first.energy -= required
+    resort turn order
+    if it's the player:
+        set game state to player turn
+    else
+        run enemy turn    

@@ -1,8 +1,8 @@
 import { ASSERT, Vector2, randInt, vec2 } from "./ljs/littlejs";
-import { Monster } from "./monster";
+import { Monster, MonsterId } from "./monster";
 import { Player } from "./player";
 import { BUMP_WALL_SOUND, HIT_SOUNDS, MONSTER_DEATH_SOUND } from "./sound";
-import { TerrainTile, TerrainType, TerrainTypes } from "./types";
+import { TerrainTypes } from "./types";
 import { Cell, CellMap } from "./cellmap";
 import { calculateDamage } from "./formulas";
 import { StatKey } from "./stats";
@@ -12,10 +12,16 @@ export class Level {
   player: Player;
   monsters: Monster[] = [];
   nextMonsterId = 0;
+  turnOrder: TurnOrder;
 
   constructor(player: Player, map: CellMap) {
     this.player = player;
     this.map = map;
+    this.turnOrder = {
+      monsterEnergies: {},
+      playerEnergy: 0,
+      next: player,
+    };
   }
 
   movePlayer(dir: Vector2) {
@@ -34,7 +40,7 @@ export class Level {
   private attackMonster(monster: Monster) {
     const damage = calculateDamage(
       this.player.stats.get(StatKey.ATK).current,
-      monster.stats.get(StatKey.DEF).current,
+      monster.stats.get(StatKey.DEF).current
     );
 
     console.log(damage);
@@ -69,9 +75,12 @@ export class Level {
 
   private makeMonster(pos: Vector2): void {
     const monster = new Monster(this.nextMonsterId, pos);
+
     this.monsters.push(monster);
-    this.placeMonster(monster);
+    this.turnOrder.monsterEnergies[monster.id] = 0;
     this.nextMonsterId++;
+
+    this.placeMonster(monster);
   }
 
   private placePlayer(pos: Vector2): void {

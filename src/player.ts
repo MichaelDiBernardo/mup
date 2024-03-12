@@ -4,6 +4,7 @@ import { Stats, StatKey } from "./stats";
 
 export class Player extends EngineObject {
   stats: Stats;
+  isPlayer = true as const;
 
   constructor(pos: Vector2) {
     super(pos, OBJECT_WORLD_SIZE, 0, OBJECT_PIXEL_SIZE);

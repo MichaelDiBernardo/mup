@@ -2,11 +2,14 @@ import { OBJECT_PIXEL_SIZE, OBJECT_WORLD_SIZE } from "./constants";
 import { EngineObject, Vector2, randInt } from "./ljs/littlejs";
 import { Stats, StatKey } from "./stats";
 
-export class Monster extends EngineObject {
-  id: number;
-  stats: Stats;
+export type MonsterId = number;
 
-  constructor(id: number, pos: Vector2) {
+export class Monster extends EngineObject {
+  id: MonsterId;
+  stats: Stats;
+  isPlayer = false as const;
+
+  constructor(id: MonsterId, pos: Vector2) {
     super(pos, OBJECT_WORLD_SIZE, randInt(1, 16), OBJECT_PIXEL_SIZE);
     this.id = id;
     this.stats = new Stats({
